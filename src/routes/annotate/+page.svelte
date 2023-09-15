@@ -22,6 +22,7 @@
     let maxImgUrl = "";
     let maxImgUrls = [];
     let maxImgIndex = 0;
+    let maxedObservation = -1;
 
     let showChooseAnnotationFields = false;
 
@@ -217,19 +218,28 @@
     const scrollImgs = (observation) => (e) => {
         const boundingRect = observation.ref.getBoundingClientRect();
 
+        const maxScrollLeft =
+            observation.ref.scrollWidth - observation.ref.clientWidth;
+        // console.log(
+        //     e.deltaY,
+        //     observation.ref.scrollLeft,
+        //     observation.ref.scrollLeftMax,
+        //     maxScrollLeft
+        // );
+
         e.preventDefault();
         if (
             (e.deltaY > 0 &&
-                (observation.ref.scrollLeft === observation.ref.scrollLeftMax ||
+                (observation.ref.scrollLeft === maxScrollLeft ||
                     boundingRect.bottom > window.innerHeight)) ||
             (e.deltaY < 0 &&
                 (observation.ref.scrollLeft === 0 || boundingRect.top < 0)) // window.innerHeight))
         ) {
-            scrollBy({ top: e.deltaY, behavior: "auto" });
+            scrollBy({ top: e.deltaY, left: e.deltaX, behavior: "auto" });
             return;
         }
         // console.log(observation.ref);
-        observation.ref.scrollBy({ left: e.deltaY });
+        observation.ref.scrollBy({ left: e.deltaY + e.deltaX });
     };
 
     onMount(() => {
@@ -253,6 +263,7 @@
         imgIndex={maxImgIndex}
     />
 {/if}
+<!-- <span style="position: absolute; z-index: 200; color: #f0f;">{maxedObservation} {maxImgUrls.length}</span> -->
 <!-- <button on:click={() => console.log(annotations)}>AAAA</button> -->
 <!-- <button on:click={() => console.log(activeAnnotations)}>BBBB</button> -->
 <div>
@@ -328,7 +339,7 @@
                     observation.annotated ? " annotated" : ""
                 }`}
             >
-                <div class="buts">
+                <div class={maxImgUrls.length > 0 && observation.id === maxedObservation ? "buts max" : "buts" }>
                     {#each activeAnnotations as annotation}
                         <!-- {console.log(Array.from(annotation.values))} -->
                         <div class="buttons">
@@ -388,6 +399,7 @@
                                             url.replace("square", "original")
                                     );
                                     maxImgIndex = index;
+                                    maxedObservation = observation.id;
                                 }}
                             />
                         </div>
@@ -444,6 +456,15 @@
         display: flex;
         gap: 8px;
         margin-bottom: 8px;
+    }
+
+    .buts.max{
+        position: fixed;
+        z-index: 150;
+    }
+
+    .buts.max .obs-info {
+        display: none;
     }
 
     .buts .buttons:empty {
