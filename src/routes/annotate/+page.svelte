@@ -197,6 +197,9 @@ import intersection from "lodash";
 
     const saveQuery = () => {
         if (!queryName) return;
+        if (!savedQueries){
+            savedQueries = {};
+        }
         savedQueries[queryName] = searchParams;
         localStorage.setItem("saved_queries", JSON.stringify(savedQueries));
         // console.log(savedQueries);
