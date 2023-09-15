@@ -3,7 +3,8 @@
 
     import jwt_decode from "jwt-decode";
     import { onMount } from "svelte";
-    import { sortBy, intersection } from "lodash";
+    import  sortBy   from "lodash";
+import intersection from "lodash";
     import ChooseAnnotationFields from "./ChooseAnnotationFields.svelte";
     import MaxImg from "./MaxImg.svelte";
 
