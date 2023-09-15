@@ -17,7 +17,7 @@
 
     onMount(async () => {
         const terms = localStorage.getItem("controlled_terms");
-        console.log(JSON.parse(terms));
+        // console.log(JSON.parse(terms));
         if (terms) {
             controlledTerms = JSON.parse(terms);
             annotations = controlledTerms;

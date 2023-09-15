@@ -13,11 +13,11 @@
 
     const scroll = (e) => {
         e.preventDefault();
-        if (e.deltaY < 0) {
+        if (e.deltaY > 0) {
             imgIndex = (imgIndex + 1) % urlsLen;
             return;
         }
-        if (e.deltaY > 0) {
+        if (e.deltaY < 0) {
             imgIndex = (imgIndex + urlsLen - 1) % urlsLen;
         }
     };

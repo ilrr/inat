@@ -3,8 +3,11 @@
 
     import jwt_decode from "jwt-decode";
     import { onMount } from "svelte";
-    import  sortBy   from "lodash";
-import intersection from "lodash";
+
+    import _ from "lodash";
+    const { sortBy } = _;
+    const { intersection } = _;
+
     import ChooseAnnotationFields from "./ChooseAnnotationFields.svelte";
     import MaxImg from "./MaxImg.svelte";
 
@@ -29,7 +32,7 @@ import intersection from "lodash";
     let savedQueries = {};
     let queryName;
 
-    let annotationAttributeId = 12;
+    // let annotationAttributeId = 12;
     // $: annotationOptions = annotations[annotationAttributeId].options;
 
     let annotations = [];
@@ -197,7 +200,7 @@ import intersection from "lodash";
 
     const saveQuery = () => {
         if (!queryName) return;
-        if (!savedQueries){
+        if (!savedQueries) {
             savedQueries = {};
         }
         savedQueries[queryName] = searchParams;
@@ -251,7 +254,7 @@ import intersection from "lodash";
     />
 {/if}
 <!-- <button on:click={() => console.log(annotations)}>AAAA</button> -->
-<!-- <button on:click={() => console.log(activeAnnotations)}>AAAA</button> -->
+<!-- <button on:click={() => console.log(activeAnnotations)}>BBBB</button> -->
 <div>
     <button
         on:click={() => {
@@ -327,8 +330,10 @@ import intersection from "lodash";
             >
                 <div class="buts">
                     {#each activeAnnotations as annotation}
+                        <!-- {console.log(Array.from(annotation.values))} -->
                         <div class="buttons">
                             {#each annotation.values as opt}
+                                <!-- {opt.label} . {hasField(observation,opt,annotation) ? "T":"F"} . -->
                                 {#if hasField(observation, opt, annotation)}
                                     <button
                                         on:click={() =>
@@ -378,8 +383,9 @@ import intersection from "lodash";
                             <img
                                 src={photo.url.replace("square", "large")}
                                 on:click={() => {
-                                    maxImgUrls = observation.photos.map(({url}) =>
-                                        url.replace("square", "original")
+                                    maxImgUrls = observation.photos.map(
+                                        ({ url }) =>
+                                            url.replace("square", "original")
                                     );
                                     maxImgIndex = index;
                                 }}
